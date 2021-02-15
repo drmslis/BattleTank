@@ -47,8 +47,7 @@ void APawnTurret::CheckFireCondition()
     if(ReturnDistanceToPlayer() <= FireRange)
     {
         Fire();        
-    }
-    
+    }    
 }
 
 float APawnTurret::ReturnDistanceToPlayer() 
