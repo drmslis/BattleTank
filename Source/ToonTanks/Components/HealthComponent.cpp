@@ -16,7 +16,6 @@ UHealthComponent::UHealthComponent()
 	// ...
 }
 
-
 // Called when the game starts
 void UHealthComponent::BeginPlay()
 {
@@ -36,6 +35,7 @@ void UHealthComponent::TakeDamage(AActor* DamageActor, float Damage, const UDama
 	}
 
 	Health = FMath::Clamp(Health - Damage, 0.0f, DefaultHealth);
+	UE_LOG(LogTemp, Warning, TEXT("HEALTH: %f"), Health);
 
 	if(Health <= 0)
 	{
