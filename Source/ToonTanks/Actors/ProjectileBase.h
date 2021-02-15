@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Camera/CameraShake.h"
 #include "ProjectileBase.generated.h"
 
 class UProjectileMovementComponent;
@@ -41,6 +42,10 @@ protected:
 	USoundBase* HitSound;
 	UPROPERTY(EditAnywhere, Category = "Effects")
 	USoundBase* LaunchSound;
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	TSubclassOf<UCameraShake> HitShake;
+
+
 
 	//---Functions
 	UFUNCTION()

@@ -5,6 +5,7 @@
 #include "Math/UnrealMathUtility.h"
 #include "Kismet/GameplayStatics.h"
 #include "ToonTanks/GameModes/TankGameModeBase.h"
+#include "ToonTanks/Pawns/PawnTank.h"
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -24,7 +25,12 @@ void UHealthComponent::BeginPlay()
 	Health = DefaultHealth;
 	GameModeRef = Cast<ATankGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::TakeDamage);
-	
+
+	if(GameModeRef)	
+	{
+		GameModeRef->SetPlayerMaxHealth(DefaultHealth);
+		GameModeRef->SetPlayerCurrentHealth(Health);
+	}
 }
 
 void UHealthComponent::TakeDamage(AActor* DamageActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser) 
@@ -35,7 +41,13 @@ void UHealthComponent::TakeDamage(AActor* DamageActor, float Damage, const UDama
 	}
 
 	Health = FMath::Clamp(Health - Damage, 0.0f, DefaultHealth);
-	UE_LOG(LogTemp, Warning, TEXT("HEALTH: %f"), Health);
+	//UE_LOG(LogTemp, Warning, TEXT("HEALTH: %f"), Health);
+	if(GameModeRef && (GetOwner() == Cast<APawnTank>(DamageActor))) 
+	{
+		GameModeRef->SetPlayerCurrentHealth(Health);
+		GameModeRef->UpdatePlayerHealthBar();
+	}
+
 
 	if(Health <= 0)
 	{
@@ -49,6 +61,4 @@ void UHealthComponent::TakeDamage(AActor* DamageActor, float Damage, const UDama
 		}
 	}
 }
-
-
 

@@ -21,13 +21,24 @@ class TOONTANKS_API ATankGameModeBase : public AGameModeBase
 		APlayerControllerBase* PlayerControllerRef;
 
 		int32 GetTargetTurretsCount();
+		
+		UPROPERTY(BlueprintReadonly, meta = (AllowPrivateAccess = "true"))
+		float PlayerMaxHealth = 0;
+		UPROPERTY(BlueprintReadonly, meta = (AllowPrivateAccess = "true"))
+		float PlayerCurrentHealth = 0;
+
 		void HandleGameStart();
 		void HandleGameOver(bool PlayerWon);
 
 	public:
 
 		void ActorDied(AActor* DeadActor);
-
+		void SetPlayerMaxHealth(float);
+		void SetPlayerCurrentHealth(float);
+		
+		UFUNCTION(BlueprintImplementableEvent)	
+		void UpdatePlayerHealthBar();
+		
 	protected: 
 
 		UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Game Loop")
@@ -38,4 +49,10 @@ class TOONTANKS_API ATankGameModeBase : public AGameModeBase
 		void GameStart();
 		UFUNCTION(BlueprintImplementableEvent)
 		void GameOver(bool PlayerWon);
+		UFUNCTION(BlueprintImplementableEvent)
+		void InGameUIShow();
+		UFUNCTION(BlueprintImplementableEvent)	
+		void UpdateTargetTurrets();
+		UFUNCTION(BlueprintPure)
+		int32 GetTargetTurrets();
 };

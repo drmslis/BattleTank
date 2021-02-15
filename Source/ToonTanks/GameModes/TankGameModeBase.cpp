@@ -28,7 +28,9 @@ void ATankGameModeBase::ActorDied(AActor *DeadActor)
     else if (APawnTurret *DestroyedTurret = Cast<APawnTurret>(DeadActor))
     {
         DestroyedTurret->HandleDestruction();
-        if (--TargetTurrets == 0)
+        --TargetTurrets;
+        UpdateTargetTurrets();
+        if (TargetTurrets == 0)
         {
             HandleGameOver(true);
         }
@@ -64,4 +66,19 @@ int32 ATankGameModeBase::GetTargetTurretsCount()
     TArray<AActor*> TurretActors;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), APawnTurret::StaticClass(), TurretActors);
     return TurretActors.Num();
+}
+
+int32 ATankGameModeBase::GetTargetTurrets() 
+{
+    return TargetTurrets;
+}
+
+void ATankGameModeBase::SetPlayerMaxHealth(float HealthValue) 
+{
+    PlayerMaxHealth = HealthValue;
+}
+
+void ATankGameModeBase::SetPlayerCurrentHealth(float HealthValue) 
+{
+    PlayerCurrentHealth = HealthValue;
 }
